@@ -88,7 +88,7 @@ do_normalize(pTHX_ normalization norm, SV *input, char **out) {
     temp = SvPVutf8(output, len);
   }
 
-  *out = (char *)malloc((len)*sizeof(char));
+  *out = (char *)malloc(len);
   if (*out == NULL) {
     Perl_croak(aTHX_ "Could not allocate memory for return value of normalization");
   }
