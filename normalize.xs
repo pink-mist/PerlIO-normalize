@@ -108,7 +108,6 @@ do_normalize(pTHX_ normalization norm, SV *input, char **out) {
 IV
 PerlIOnormalize_fill(pTHX_ PerlIO *f)
 {
-  PerlIOnormalize *nz = PerlIOSelf(f, PerlIOnormalize);
   PerlIO *nx = PerlIONext(f);
   SSize_t avail;
 
@@ -134,6 +133,7 @@ PerlIOnormalize_fill(pTHX_ PerlIO *f)
   }
 
   if (avail > 0) {
+    PerlIOnormalize *nz = PerlIOSelf(f, PerlIOnormalize);
     STDCHAR *ptr = PerlIO_get_ptr(nx);
     SV *input;
     char *out;
@@ -173,14 +173,14 @@ IV
 PerlIOnormalize_flush(pTHX_ PerlIO *f)
 {
   PerlIOnormalize *nz = PerlIOSelf(f, PerlIOnormalize);
-  PerlIO *nx = PerlIONext(f);
 
   if ((PerlIOBase(f)->flags & PERLIO_F_WRBUF) && (nz->buf.ptr > nz->buf.buf)) {
+    PerlIO *nx = PerlIONext(f);
+    STDCHAR *ptr = nz->buf.buf;
+    Size_t avail = nz->buf.ptr - nz->buf.buf;
     SV *input;
     char *out;
     STRLEN len = 0;
-    STDCHAR *ptr = nz->buf.buf;
-    Size_t avail = nz->buf.ptr - nz->buf.buf;
     SSize_t count = 0;
 
     input = newSVpvn(ptr, avail);
