@@ -159,7 +159,7 @@ PerlIOnormalize_fill(pTHX_ PerlIO *f)
   }
   
   if (avail == 0) {
-    Perl_warn(aTHX_ "EOF reached");
+    /* EOF reached */
     PerlIOBase(f)->flags |= PERLIO_F_EOF;
   } else {
     PerlIOBase(f)->flags |= PERLIO_F_ERROR;
